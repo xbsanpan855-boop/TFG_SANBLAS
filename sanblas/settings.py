@@ -4,6 +4,7 @@ Django settings for sanblas project.
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # 1. RUTAS BÁSICAS
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,10 +60,9 @@ WSGI_APPLICATION = 'sanblas.wsgi.application'
 
 # 6. BASE DE DATOS
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
 # 7. VALIDACIÓN DE CONTRASEÑAS
