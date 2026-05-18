@@ -30,6 +30,13 @@ class RegistroUsuarioForm(UserCreationForm):
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['tipo_usuario'].choices = [
+                ('B2C', 'Particular (B2C)'),
+                ('B2B', 'Empresa (B2B)'),
+            ]
+
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
