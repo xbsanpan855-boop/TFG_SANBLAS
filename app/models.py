@@ -84,7 +84,7 @@ class Producto(models.Model):
     stock = models.IntegerField(default=0)
 
     # IMAGEN
-    imagenProducto = models.ImageField(upload_to='productos/', blank=True, null=True)
+    imagenProducto = models.URLField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return f"Producto: {self.nombre} (Origen: {self.origen})"
@@ -143,7 +143,7 @@ class Receta(models.Model):
 
     dificultad = models.CharField(max_length=10, choices=Dificultad.choices, default=Dificultad.BAJA)
 
-    imagenReceta = models.ImageField(upload_to='receta/', blank=True, null=True)
+    imagenReceta = models.URLField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return f"Receta: {self.titulo} (Dificultad: {self.dificultad})"
