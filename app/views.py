@@ -12,6 +12,7 @@ from xhtml2pdf import pisa
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required, user_passes_test
+import os
 
 # Create your views here.
 
@@ -620,7 +621,7 @@ def generar_comparativa_ia(request, pk):
     producto_san_blas = producto_competidor.producto_san_blas
 
     # 1. Tu clave y la URL directa de Google
-    API_KEY = "AIzaSyBcpU9hHDVb8NQxHHoy4iNcrrc5oU-Hk-8"
+    API_KEY = os.environ.get('GEMINI_API_KEY')
     url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={API_KEY}"
 
     # 2. El texto que le enviamos a la IA
@@ -673,6 +674,7 @@ def generar_comparativa_ia(request, pk):
 
     except Exception as e:
         # Si falla, imprimimos la respuesta de Google para ver qué pasa
+        print(f"ERROR PYTHON: {e}")
         messages.error(request, "No se pudo conectar con la IA en este momento.")
 
     return redirect('producto_detalle', pk=producto_san_blas.pk)
