@@ -21,9 +21,9 @@
                         
                         <div class="bg-light text-center border-bottom d-flex align-items-center justify-content-center" style="height: 200px; border-radius: 12px 12px 0 0; overflow: hidden;">
                             {% if receta.imagenReceta %}
-                                <img src="{{ receta.imagenReceta.url }}" alt="{{ receta.titulo }}" class="w-100 h-100 object-fit-cover">
+                                <img src="{{ receta.imagenReceta }}" alt="{{ receta.nombre_receta }}">
                             {% else %}
-                                <i class="fa-solid fa-bowl-rice display-6 opacity-25" style="color: var(--primario);"></i>
+                                <div class="bg-light text-center py-5 text-muted">Sin foto</div>
                             {% endif %}
                         </div>
                         

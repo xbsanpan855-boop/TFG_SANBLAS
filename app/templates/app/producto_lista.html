@@ -44,10 +44,8 @@
                 <article class="tarjeta-producto h-100 d-flex flex-column {% if prod.stock <= 0 %}pe-none bg-light border-secondary-subtle opacity-75{% endif %}">
                     
                     <div class="img-contenedor position-relative">
-                        {% if prod.imagen_url %}
-                            <img src="{{ prod.imagen_url }}" alt="{{ prod.nombre }}" {% if prod.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
-                        {% elif prod.imagenProducto %}
-                            <img src="{{ prod.imagenProducto.url }}" alt="{{ prod.nombre }}" {% if prod.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
+                        {% if prod.imagenProducto %}
+                            <img src="{{ prod.imagenProducto }}" alt="{{ prod.nombre }}" {% if prod.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
                         {% else %}
                             <div class="d-flex align-items-center justify-content-center h-100 text-muted small bg-light">Sin foto</div>
                         {% endif %}
@@ -56,7 +54,6 @@
                             <span class="position-absolute top-0 start-0 m-2 badge bg-dark text-white fw-bold rounded-pill px-3 py-2">AGOTADO</span>
                         {% endif %}
                     </div>
-                    
                     <div class="d-flex flex-column flex-grow-1 mt-2">
                         <h3 class="h6 fw-bold mb-1 {% if prod.stock <= 0 %}text-secondary{% else %}text-dark{% endif %}">{{ prod.nombre }}</h3>
                         <p class="text-muted small text-uppercase mb-2" style="letter-spacing: 1px;">{{ prod.categoria.nombre }}</p>
