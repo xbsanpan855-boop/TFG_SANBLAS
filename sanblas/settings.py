@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 2. SEGURIDAD (En desarrollo)
 SECRET_KEY = 'django-insecure-nfcg!%l%8%0ig)g@!j73k%r2akgy51n)=9!=q0_dzd!qr#e)0f'
 DEBUG = False
-ALLOWED_HOSTS = ['.render.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['tfg-sanblas.onrender.com', '.onrender.com', 'localhost', '127.0.0.1']
 
 # 3. APLICACIONES
 INSTALLED_APPS = [
