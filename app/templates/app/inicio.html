@@ -4,14 +4,17 @@
 {% block content %}
 <section class="container py-5 my-md-4">
     <div class="row align-items-center gy-5">
-        <div class="col-lg-6 pr-lg-5">
+        <div class="col-lg-6 pe-lg-5">
             <span class="text-uppercase fw-bold mb-2 d-block" style="color: var(--acento); letter-spacing: 2px;">Selección Gourmet Natural</span>
             <h1 class="display-4 fw-bolder mb-4 text-dark">El sabor de la tradición familiar.</h1>
             <p class="lead text-muted mb-4">Frutos secos, especias y snacks seleccionados en origen. Llevamos la máxima calidad del campo directamente a tu casa, sin procesados innecesarios.</p>
             <a href="{% url 'producto_lista' %}" class="btn btn-primario btn-lg rounded-pill px-4">Explorar Catálogo</a>
         </div>
         <div class="col-lg-6">
-            <img src="https://img.magnific.com/foto-gratis/vista-angulo-alto-variedad-frutos-secos-frutas-secas-diferentes-cuencos-nueces-pistachos-almendras-mani-anacardos-pinones-vertical_176474-2037.jpg" class="img-fluid rounded-4 shadow" alt="Frutos Secos">
+            <img src="https://img.magnific.com/foto-gratis/vista-angulo-alto-variedad-frutos-secos-frutas-secas-diferentes-cuencos-nueces-pistachos-almendras-mani-anacardos-pinones-vertical_176474-2037.jpg" 
+                 class="img-fluid rounded-4 shadow w-100" 
+                 style="object-fit: cover; max-height: 550px;" 
+                 alt="Frutos Secos">
         </div>
     </div>
 </section>
@@ -47,28 +50,41 @@
             {% if productos_destacados %}
                 {% for producto in productos_destacados %}
                     <div class="col-sm-6 col-lg-3">
-                        <article class="tarjeta-producto">
-                            <div class="img-contenedor">
+                        <article class="tarjeta-producto h-100 d-flex flex-column {% if producto.stock <= 0 %}pe-none bg-light border-secondary-subtle opacity-75{% endif %}">
+                            <div class="img-contenedor position-relative border-bottom bg-white d-flex align-items-center justify-content-center" style="height: 200px; overflow: hidden; padding: 10px;">
                                 {% if producto.imagenProducto %}
-                                    <img src="{{ producto.imagenProducto.url }}" alt="{{ producto.nombre }}">
+                                    <img src="{{ producto.imagenProducto }}" 
+                                         alt="{{ producto.nombre }}" 
+                                         class="img-fluid" 
+                                         style="max-width: 100%; max-height: 100%; object-fit: contain; width: auto; height: auto;"
+                                         {% if producto.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
                                 {% else %}
-                                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">Sin imagen</div>
+                                    <div class="d-flex align-items-center justify-content-center h-100 text-muted small bg-light w-100">Sin imagen</div>
                                 {% endif %}
                                 
-                                {% if producto.stock < 15 %}
-                                    <span class="etiqueta-stock">¡Solo {{ producto.stock }} uds!</span>
+                                {% if producto.stock < 15 and producto.stock > 0 %}
+                                    <span class="position-absolute top-0 end-0 m-2 badge bg-danger text-white rounded-pill px-2 py-1 small">¡Solo {{ producto.stock }} uds!</span>
+                                {% elif producto.stock <= 0 %}
+                                    <span class="position-absolute top-0 start-0 m-2 badge bg-dark text-white fw-bold rounded-pill px-3 py-2">AGOTADO</span>
                                 {% endif %}
                             </div>
                             
-                            <div class="d-flex flex-column flex-grow-1">
+                            <div class="d-flex flex-column flex-grow-1 p-3">
                                 <small class="text-muted text-uppercase fw-semibold" style="letter-spacing: 1px;">{{ producto.categoria.nombre }}</small>
                                 <h3 class="fs-5 fw-bold mt-1 mb-3"><a href="{% url 'producto_detalle' producto.pk %}" class="text-dark text-decoration-none">{{ producto.nombre }}</a></h3>
                                 
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="precio">{{ producto.precio_base }}€</span>
-                                    <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-light rounded-circle shadow-sm" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
-                                        <i class="fa-solid fa-plus"></i>
+                                    <span class="fs-5 fw-bold" style="color: {% if producto.stock <= 0 %}#6c757d{% else %}var(--primario){% endif %};">{{ producto.precio_base }}€</span>
+                                    
+                                    {% if producto.stock > 0 %}
+                                    <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-light rounded-circle shadow-sm border" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                        <i class="fa-solid fa-plus text-dark"></i>
                                     </a>
+                                    {% else %}
+                                    <button class="btn btn-secondary rounded-circle shadow-sm border" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;" disabled>
+                                        <i class="fa-solid fa-lock text-white"></i>
+                                    </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </article>
