@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 65vh;">
+    <div class="card p-4 shadow-sm w-100" style="max-width: 440px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        
+        <header class="text-center mb-4 pb-3 border-bottom">
+            <h2 class="h4 fw-bold text-dark mb-0">Entrar</h2>
+        </header>
+
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            
+            <div class="text-start">
+                {{ form.as_p }}
+            </div>
+
+            <div class="text-center mt-3 d-flex flex-column gap-3">
+                <button type="submit" class="btn btn-primario py-2 w-100 rounded-pill fw-bold">
+                    Iniciar Sesión
+                </button>
+                
+                <p class="small text-muted mb-0">
+                    ¿No eres cliente? <a href="{% url 'registro' %}" class="text-decoration-none fw-semibold" style="color: var(--primario);">Regístrate aquí</a>
+                </p>
+            </div>
+        </form>
+        
+    </div>
+</section>
+{% endblock %}

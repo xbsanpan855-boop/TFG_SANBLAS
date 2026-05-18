@@ -1,0 +1,102 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Mi Carrito | San Blas{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom">
+        <h1 class="h2 fw-bold text-dark mb-3 mb-md-0">Mi Carrito de Compras</h1>
+        <a href="{% url 'producto_lista' %}" class="text-decoration-none fw-semibold" style="color: var(--primario);">
+            <i class="fa-solid fa-arrow-left me-1"></i> Continuar Comprando
+        </a>
+    </header>
+
+    {% if items %}
+        <div class="row g-4">
+            
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 bg-white rounded-3 overflow-hidden">
+                    <div class="list-group list-group-flush">
+                        
+                        {% for item in items %}
+                            <article class="list-group-item p-4">
+                                <div class="row align-items-center gy-3">
+                                    
+                                    <div class="col-md-5">
+                                        <h3 class="h5 fw-bold text-dark mb-1">{{ item.producto.nombre }}</h3>
+                                        <p class="text-muted small mb-0">{{ item.producto.precio_base }}€ / unidad</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <form method="post" action="{% url 'actualizar_carrito' item.id %}" class="d-flex align-items-center gap-2">
+                                            {% csrf_token %}
+                                            <label for="id_cantidad_{{ item.id }}" class="visually-hidden">Cantidad:</label>
+                                            
+                                            <input type="number" name="cantidad" value="{{ item.cantidad }}" min="0" id="id_cantidad_{{ item.id }}" class="form-control input-cantidad">
+                                            
+                                            <button type="submit" class="btn btn-sm btn-secundario" title="Actualizar cantidad">
+                                                <i class="fa-solid fa-arrows-rotate"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-3 d-flex flex-column align-items-md-end justify-content-center">
+                                        <p class="fw-bold fs-5 text-dark mb-2">{{ item.calcular_subtotal }}€</p>
+                                        <a href="{% url 'eliminar_carrito' item.id %}" class="text-danger small fw-semibold text-decoration-none" onclick="return confirm('¿Eliminar este producto del carrito?')">
+                                            <i class="fa-regular fa-trash-can me-1"></i> Eliminar
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </article>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card p-4 shadow-sm border-0 bg-white rounded-3 sticky-top sticky-offset">
+                    <h2 class="h5 fw-bold text-dark mb-4 border-bottom pb-3">Resumen del Carrito</h2>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal:</span>
+                        <span class="fw-semibold text-dark">{{ carrito.calcular_total_sin_descuento }}€</span>
+                    </div>
+
+                    {% if carrito.calcular_descuento_aplicado > 0 %}
+                        <div class="d-flex justify-content-between mb-3 text-success">
+                            <span><i class="fa-solid fa-tag me-1"></i> Descuento ({{ user.tarifa.nombre_tarifa }}):</span>
+                            <span class="fw-semibold">-{{ carrito.calcular_descuento_aplicado }}€</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between mb-4 pt-3 border-top">
+                        <span class="text-dark fw-bold fs-5">Total:</span>
+                        <span class="fs-4 fw-bold" style="color: var(--primario);">{{ carrito.calcular_total_con_descuento }}€</span>
+                    </div>
+
+                    <a href="{% url 'procesar_compra' %}" class="btn btn-primario w-100 py-3 rounded-pill fw-bold" onclick="return confirm('¿Confirmar compra?')">
+                        Finalizar Compra
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+    {% else %}
+        <div class="card shadow-sm border-0 rounded-3 text-center py-5 mt-4">
+            <div class="card-body py-5">
+                <i class="fa-solid fa-basket-shopping display-1 text-muted mb-4 opacity-50"></i>
+                <p class="fs-4 text-dark fw-semibold mb-2">Tu carrito está vacío.</p>
+                <p class="text-muted mb-4">Parece que aún no has añadido nada a tu pedido.</p>
+                <a href="{% url 'producto_lista' %}" class="btn btn-primario rounded-pill px-4 py-2">
+                    Ver Productos
+                </a>
+            </div>
+        </div>
+    {% endif %}
+    
+</section>
+{% endblock %}

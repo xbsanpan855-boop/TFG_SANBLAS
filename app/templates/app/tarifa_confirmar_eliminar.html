@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card p-4 shadow-sm w-100 text-center" style="max-width: 420px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        <header class="mb-4 pb-3 border-bottom">
+            <i class="fa-solid fa-triangle-exclamation display-4 text-danger mb-3"></i>
+            <h2 class="h4 fw-bold text-dark mb-2">¿Eliminar tarifa?</h2>
+            <p class="text-muted mb-0 mt-3">Vas a borrar la tarifa <strong>{{ tarifa.nombre_tarifa }} ({{ tarifa.porcentaje_descuento }}%)</strong>.</p>
+        </header>
+
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div class="d-flex flex-column gap-2 mt-2">
+                <button type="submit" class="btn btn-danger py-2 w-100 rounded-pill fw-bold">
+                    Confirmar eliminación
+                </button>
+                <a href="{% url 'tarifa_lista' %}" class="small text-decoration-none text-muted mt-2 fw-semibold">Cancelar y volver</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

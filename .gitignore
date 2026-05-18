@@ -1,0 +1,10 @@
+env/
+
+# Base de datos local (NO se sube a GitHub porque en Render crearás otra limpia)
+db.sqlite3
+db.sqlite3-journal
+
+# Archivos de medios (Las fotos que subes de prueba en local)
+media/
+media/productos/
+media/receta/

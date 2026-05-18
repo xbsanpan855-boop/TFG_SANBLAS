@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card p-4 shadow-sm w-100" style="max-width: 450px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        <header class="text-center mb-4 pb-3 border-bottom">
+            <h1 class="h4 fw-bold text-dark mb-0">{% if producto_competidor %}Editar{% else %}Crear{% endif %} producto del competidor</h1>
+        </header>
+
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div class="text-start">
+                {{ form.as_p }}
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primario py-2 w-100 rounded-pill fw-bold">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

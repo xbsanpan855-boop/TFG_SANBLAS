@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura_{{ pedido.pk }}</title>
+    <style>
+        @page {
+            size: a4;
+            margin: 2cm;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333333;
+            font-size: 11pt;
+            line-height: 1.4;
+        }
+        .header-table, .info-table, .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .text-end { text-align: right; }
+        .fw-bold { font-weight: bold; }
+        
+        /* Colores corporativos San Blas */
+        .brand-title { color: #8B5A2B; font-size: 24pt; font-weight: bold; }
+        .invoice-title { font-size: 16pt; color: #555555; }
+        
+        .items-table th {
+            background-color: #F8F9FA;
+            border-bottom: 2px solid #8B5A2B;
+            padding: 8px;
+            font-size: 10pt;
+            text-transform: uppercase;
+            color: #555;
+        }
+        .items-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #E5E5E5;
+        }
+        .total-box {
+            background-color: #F8F9FA;
+            padding: 15px;
+            border-top: 2px solid #8B5A2B;
+            width: 40%;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="brand-title">FRUTOS SECOS SAN BLAS</div>
+                <p style="font-size: 9pt; color: #777;">
+                    {{ empresa.nombre }}<br>
+                    CIF: {{ empresa.cif }}<br>
+                    {{ empresa.direccion }}
+                </p>
+            </td>
+            <td class="text-end" style="vertical-align: top;">
+                <div class="invoice-title">FACTURE B2B</div>
+                <p style="font-size: 10pt; margin-top: 10px;">
+                    <strong>Nº Factura:</strong> FSB-2026-{{ pedido.pk }}<br>
+                    <strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d/m/Y" }}
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="info-table" style="background-color: #FDFCFB; border: 1px solid #F1EAE4; padding: 15px;">
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <strong style="color: #8B5A2B;">Datos del Cliente:</strong><br>
+                <strong>Razón Social:</strong> {{ pedido.usuario.razon_social|default:pedido.usuario.get_full_name }}<br>
+                <strong>CIF/NIF:</strong> {{ pedido.usuario.cif_nif|default:"-" }}<br>
+                <strong>Teléfono:</strong> {{ pedido.usuario.telefono|default:"-" }}
+            </td>
+            <td style="width: 50%; vertical-align: top;">
+                <strong style="color: #8B5A2B;">Dirección Fiscal y Envío:</strong><br>
+                {{ pedido.usuario.direccion_fiscal|default:pedido.usuario.direccion_envio }}
+            </td>
+        </tr>
+    </table>
+
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Producto</th>
+                <th>Cantidad</th>
+                <th class="text-end">Precio Unitario</th>
+                <th class="text-end">IVA (10%)</th>
+                <th class="text-end">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if lineas %}
+                {% for linea in lineas %}
+                    <tr>
+                        <td>{{ linea.producto.nombre }}</td>
+                        <td style="text-align: center;">{{ linea.cantidad }}</td>
+                        <td class="text-end">{{ linea.precio_unitario_aplicado }}€</td>
+                        <td class="text-end">{{ linea.calcular_cuota_iva }}€</td>
+                        <td class="text-end">{{ linea.calcular_subtotal }}€</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    <div class="total-box">
+        <table style="width: 100%;">
+            <tr>
+                <td class="fw-bold" style="font-size: 12pt; color: #8B5A2B;">Cantidad descontada ({{ pedido.usuario.tarifa.porcentaje_descuento }}%):</td>
+                <td class="text-end fw-bold" style="font-size: 12pt; color: #8B5A2B;">{{ pedido.calcular_cantidad_descontada }}€</td>
+            </tr>
+            <tr>
+                <td class="fw-bold" style="font-size: 11pt; color: #555;">Base imponible (10%):</td>
+                <td class="text-end fw-bold" style="font-size: 11pt; color: #555;">{{ pedido.obtener_base_imponible }}€</td>
+            </tr>
+            <tr>
+                <td class="fw-bold" style="font-size: 11pt; color: #555;">Cuota IVA:</td>
+                <td class="text-end fw-bold" style="font-size: 11pt; color: #555;">{{ pedido.obtener_cuota_iva }}€</td>
+            </tr>
+            <tr>
+                <td class="fw-bold" style="font-size: 12pt; color: #8B5A2B;">Total Factura (IVA incluido):</td>
+                <td class="text-end fw-bold" style="font-size: 12pt; color: #8B5A2B;">{{ pedido.obtener_total_real }}€</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

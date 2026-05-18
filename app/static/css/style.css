@@ -1,0 +1,174 @@
+/* =========================================
+   VARIABLES DE MARCA SAN BLAS
+   ========================================= */
+:root {
+    --primario: #386641;       
+    --primario-hover: #2b4f32;
+    --acento: #a98467;        
+    --texto-oscuro: #2b2b2b;     
+    --texto-claro: #6a6a6a;
+    --fondo-tarjeta: #ffffff;
+    --borde: #eaeaea;
+    --sombra-suave: 0 4px 12px rgba(0,0,0,0.05);
+    --sombra-hover: 0 10px 20px rgba(0,0,0,0.1);
+    --transicion: all 0.3s ease;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fcfcfA; /* Blanco roto muy sutil */
+    color: var(--texto-oscuro);
+}
+
+/* =========================================
+   COMPONENTES REUTILIZABLES (BOTONES)
+   ========================================= */
+.btn-primario {
+    background-color: var(--primario);
+    color: white;
+    font-weight: 600;
+    border: none;
+    transition: var(--transicion);
+}
+.btn-primario:hover {
+    background-color: var(--primario-hover);
+    color: white;
+}
+
+.btn-secundario {
+    background-color: transparent;
+    color: var(--primario);
+    font-weight: 600;
+    border: 2px solid var(--primario);
+    transition: var(--transicion);
+}
+.btn-secundario:hover {
+    background-color: var(--primario);
+    color: white;
+}
+
+/* =========================================
+   TARJETAS REPETITIVAS (PRODUCTOS Y CAT)
+   ========================================= */
+.tarjeta-producto {
+    background: var(--fondo-tarjeta);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--borde);
+    transition: var(--transicion);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.tarjeta-producto:hover {
+    box-shadow: var(--sombra-hover);
+    transform: translateY(-5px);
+    border-color: var(--primario);
+}
+
+.tarjeta-producto .img-contenedor {
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8f9fa;
+    margin-bottom: 1rem;
+    position: relative;
+}
+.tarjeta-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.tarjeta-producto .etiqueta-stock {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--acento);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+.tarjeta-producto .precio {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primario);
+}
+
+.tarjeta-categoria {
+    border-radius: 12px;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    color: var(--texto-oscuro);
+}
+.tarjeta-categoria img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: var(--transicion);
+}
+.tarjeta-categoria:hover img {
+    transform: scale(1.05);
+}
+
+/* =========================================
+   NAVBAR Y DETALLES ESPECÍFICOS
+   ========================================= */
+.navbar-sanblas {
+    background-color: var(--fondo-tarjeta);
+    border-bottom: 1px solid var(--borde);
+}
+.navbar-marca {
+    color: var(--primario) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.cart-badge {
+    position: absolute;
+    top: 0;
+    right: -5px;
+    background-color: var(--acento);
+    font-size: 0.65rem;
+}
+
+/* =========================================
+   ESTILOS DE FORMULARIO PARA COMPONENTES DJANGO
+   ========================================= */
+form input[type="number"], 
+form input[type="text"], 
+form select {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--texto-oscuro);
+    background-color: #ffffff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+form input[type="number"]:focus, 
+form input[type="text"]:focus, 
+form select:focus {
+    border-color: var(--primario);
+    box-shadow: 0 0 0 0.25rem rgba(56, 102, 65, 0.15);
+}
+
+/* =========================================
+   CARRITO Y UTILIDADES EXTRA
+   ========================================= */
+.input-cantidad {
+    max-width: 80px;
+    text-align: center;
+}
+
+.sticky-offset {
+    top: 100px;
+    z-index: 10;
+}

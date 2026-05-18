@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Editar Receta{% endblock %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card p-4 shadow-sm w-100" style="max-width: 500px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        <header class="text-center mb-4 pb-3 border-bottom">
+            <h1 class="h4 fw-bold text-dark mb-0">Editar Receta</h1>
+        </header>
+
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            <div class="text-start">
+                {{ form.as_p }}
+            </div>
+            <div class="d-flex flex-column gap-2 mt-3">
+                <button type="submit" class="btn btn-primario py-2 w-100 rounded-pill fw-bold">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Guardar cambios
+                </button>
+                <a href="{% url 'receta_detalle' pk=receta.pk %}" class="text-center small text-decoration-none text-muted mt-2 fw-semibold">Volver al detalle de la receta</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

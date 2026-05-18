@@ -1,0 +1,102 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5">
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom">
+        <h1 class="h2 fw-bold text-dark mb-3 mb-md-0">Catálogo de Productos</h1>
+        {% if user.is_staff %}
+            <a href="{% url 'producto_nuevo' %}" class="btn btn-primario rounded-pill px-4">
+                <i class="fa-solid fa-plus me-1"></i> Nuevo Producto
+            </a>
+        {% endif %}
+    </header>
+
+    <form method="get" class="card shadow-sm border-0 bg-white p-3 p-md-4 mb-5 rounded-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <input type="text" name="input_nombre" placeholder="Buscar producto..." value="{{ filtros.input_nombre }}" class="form-control bg-light">
+            </div>
+            <div class="col-md-3">
+                <select name="select_categoria" class="form-select bg-light">
+                    <option value="">Todas las categorías</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if filtros.select_categoria == cat.id|stringformat:"i" %}selected{% endif %}>{{ cat.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-white text-muted"><i class="fa-solid fa-euro-sign"></i></span>
+                    <input type="number" name="input_min" placeholder="Mínimo" value="{{ filtros.input_min }}" class="form-control bg-light">
+                    <input type="number" name="input_max" placeholder="Máximo" value="{{ filtros.input_max }}" class="form-control bg-light">
+                </div>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primario flex-grow-1 fw-bold">Filtrar</button>
+                <a href="{% url 'producto_lista' %}" class="btn btn-outline-secondary px-3" title="Limpiar filtros"><i class="fa-solid fa-eraser"></i></a>
+            </div>
+        </div>
+    </form>
+
+    <div class="row g-4 mb-5">
+        {% for prod in productos %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <article class="tarjeta-producto h-100 d-flex flex-column">
+                    <div class="img-contenedor position-relative">
+                        {% if prod.imagenProducto %}
+                            <img src="{{ prod.imagenProducto.url }}" alt="{{ prod.nombre }}">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center h-100 text-muted small bg-light">Sin foto</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex flex-column flex-grow-1 mt-2">
+                        <h3 class="h6 fw-bold text-dark mb-1">{{ prod.nombre }}</h3>
+                        <p class="text-muted small text-uppercase mb-2" style="letter-spacing: 1px;">{{ prod.categoria.nombre }}</p>
+                        <p class="fs-4 fw-bold mb-3" style="color: var(--primario);">{{ prod.precio_base }}€</p>
+                        
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'producto_detalle' prod.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill flex-grow-1">Ver Detalle</a>
+                                <a href="{% url 'agregar_carrito' prod.pk %}" class="btn btn-sm btn-primario rounded-pill flex-grow-1">Comprar</a>
+                            </div>
+                            
+                            {% if user.is_staff %}
+                                <div class="d-flex justify-content-center gap-2 mt-2 pt-2 border-top">
+                                    <a href="{% url 'producto_editar' prod.pk %}" class="text-decoration-none fw-semibold small" style="color: var(--primario);">Editar</a>
+                                    <span class="text-muted small">|</span>
+                                    <a href="{% url 'producto_eliminar' prod.pk %}" class="text-danger text-decoration-none fw-semibold small">Eliminar</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5 bg-white shadow-sm rounded-4 border" style="border-color: var(--borde) !important;">
+                <i class="fa-solid fa-basket-shopping display-4 text-muted mb-3 opacity-25"></i>
+                <p class="text-muted fs-5 fw-semibold mb-0">No se han encontrado productos con esos filtros.</p>
+                <p class="text-muted small mt-2">Prueba a buscar otra cosa o limpia los filtros.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination pagination-sm gap-2 align-items-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link rounded-pill px-3 border border-secondary text-dark fw-semibold" href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">« Inicio</a></li>
+                <li class="page-item"><a class="page-link rounded-pill px-3 border border-secondary text-dark fw-semibold" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Anterior</a></li>
+            {% endif %}
+
+            <li class="page-item"><span class="px-3 fw-bold text-muted">Página {{ page_obj.number }} de {{ paginator.num_pages }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link rounded-pill px-3 border border-secondary text-dark fw-semibold" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Siguiente</a></li>
+                <li class="page-item"><a class="page-link rounded-pill px-3 border border-secondary text-dark fw-semibold" href="?page={{ paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Final »</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</section>
+{% endblock %}

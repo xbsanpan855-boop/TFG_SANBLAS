@@ -1,0 +1,115 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Panel de Control | San Blas{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+        <i class="fa-solid fa-screwdriver-wrench text-primario fs-1 me-3" style="color: #8B5A2B;"></i>
+        <div>
+            <h1 class="h2 fw-bold text-dark mb-0">Centro de Mandos</h1>
+            <p class="text-muted mb-0">Gestiona todos los módulos de Frutos Secos San Blas.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'pedido_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-receipt fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Pedidos Globales</h5>
+                        <p class="card-text text-muted small">Ver y gestionar los estados de todos los pedidos de la tienda.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'usuario_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-users fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Clientes y Usuarios</h5>
+                        <p class="card-text text-muted small">Alta, baja y edición de clientes.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'producto_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-box-open fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Catálogo y Stock</h5>
+                        <p class="card-text text-muted small">Añadir frutos secos, modificar precios y actualizar almacén.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'categoria_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-tags fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Categorías</h5>
+                        <p class="card-text text-muted small">Organiza los productos por sus familias.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'tarifa_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-percent fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Tarifas y Descuentos</h5>
+                        <p class="card-text text-muted small">Gestiona los descuentos especiales para mayoristas.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'competidor_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-building fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Competidores</h5>
+                        <p class="card-text text-muted small">Control de la competencia y generación de análisis de mercado.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <a href="{% url 'receta_lista' %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 bg-light card-hover">
+                    <div class="card-body text-center p-4">
+                        <i class="fa-solid fa-utensils fs-1 mb-3" style="color: #8B5A2B;"></i>
+                        <h5 class="card-title text-dark fw-bold">Recetas Gastronómicas</h5>
+                        <p class="card-text text-muted small">Publicar y editar recetas con sus ingredientes vinculados.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .card-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(139, 90, 43, 0.2) !important;
+        background-color: #fff !important;
+    }
+</style>
+{% endblock %}

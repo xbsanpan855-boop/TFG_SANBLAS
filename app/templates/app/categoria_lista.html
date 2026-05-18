@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5">
+    
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 pb-3 border-bottom">
+        <h1 class="h2 fw-bold text-dark mb-3 mb-md-0">Lista de Categorías</h1>
+        {% if user.is_staff %}
+            <a href="{% url 'categoria_nueva' %}" class="btn btn-primario rounded-pill px-4">
+                <i class="fa-solid fa-plus me-1"></i> Nueva Categoría
+            </a>
+        {% endif %}
+    </header>
+
+    <div class="row g-4">
+        {% for cat in categorias %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <article class="card h-100 shadow-sm p-4 text-center d-flex flex-column" style="border-radius: 12px; border: 1px solid var(--borde);">
+                    <h3 class="h5 fw-bold text-dark mb-3 mt-2">{{ cat.nombre }}</h3>
+                    
+                    {% if user.is_staff %}
+                        <div class="mt-auto pt-3 border-top d-flex justify-content-center gap-2">
+                            <a href="{% url 'categoria_editar' cat.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Editar</a>
+                            <a href="{% url 'categoria_eliminar' cat.pk %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </article>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fa-solid fa-tags display-4 text-muted mb-3 opacity-50"></i>
+                <p class="text-muted fst-italic fs-5">No hay categorías que mostrar en este momento.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

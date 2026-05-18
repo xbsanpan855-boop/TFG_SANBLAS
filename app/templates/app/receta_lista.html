@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Lista de Recetas{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 pb-3 border-bottom">
+        <h1 class="h2 fw-bold text-dark mb-3 mb-md-0">Lista de Recetas</h1>
+        {% if user.is_staff %}
+            <a href="{% url 'receta_nueva' %}" class="btn btn-primario rounded-pill px-4">
+                <i class="fa-solid fa-plus me-1"></i> Nueva receta
+            </a>
+        {% endif %}
+    </header>
+
+    {% if recetas %}
+        <div class="row g-4">
+            {% for receta in recetas %}
+                <div class="col-sm-6 col-md-4">
+                    <article class="card h-100 shadow-sm border-0 position-relative d-flex flex-column" style="border-radius: 12px; border: 1px solid var(--borde) !important;">
+                        
+                        <div class="bg-light text-center border-bottom d-flex align-items-center justify-content-center" style="height: 200px; border-radius: 12px 12px 0 0; overflow: hidden;">
+                            {% if receta.imagenReceta %}
+                                <img src="{{ receta.imagenReceta.url }}" alt="{{ receta.titulo }}" class="w-100 h-100 object-fit-cover">
+                            {% else %}
+                                <i class="fa-solid fa-bowl-rice display-6 opacity-25" style="color: var(--primario);"></i>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-body p-4 d-flex flex-column justify-content-between flex-grow-1">
+                            <h3 class="h5 fw-bold text-dark mb-4">{{ receta.titulo }}</h3>
+                            
+                            <div class="mt-auto">
+                                <a href="{% url 'receta_detalle' pk=receta.pk %}" class="btn btn-sm btn-primario rounded-pill w-100 py-2 fw-bold">
+                                    Ver detalles <i class="fa-solid fa-chevron-right small ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-12 text-center py-5 bg-white shadow-sm rounded-4 border" style="border-color: var(--borde) !important;">
+            <i class="fa-solid fa-book-open display-4 text-muted mb-3 opacity-25"></i>
+            <p class="text-muted fs-5 mb-0">No hay recetas disponibles en este momento.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

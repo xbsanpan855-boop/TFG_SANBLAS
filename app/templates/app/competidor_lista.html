@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5">
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 pb-3 border-bottom">
+        <h1 class="h2 fw-bold text-dark mb-3 mb-md-0">Lista de competidores</h1>
+        <a href="{% url 'competidor_nuevo' %}" class="btn btn-primario rounded-pill px-4">
+            <i class="fa-solid fa-plus me-1"></i> Crear competidor
+        </a>
+    </header>
+
+    {% if competidores %}
+        <div class="row g-4">
+            {% for competidor in competidores %}
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <article class="card h-100 shadow-sm p-4 text-center d-flex flex-column" style="border-radius: 12px; border: 1px solid var(--borde);">
+                        <div class="mb-3">
+                            <p class="text-muted small text-uppercase mb-1">Nombre competidor</p>
+                            <h3 class="h5 fw-bold text-dark mb-0">{{ competidor.nombre_competidor }}</h3>
+                        </div>
+                        
+                        <div class="mt-auto pt-3 border-top d-flex flex-column gap-2">
+                            <a href="{% url 'competidor_detalle' competidor.pk %}" class="btn btn-primario btn-sm rounded-pill w-100">Ver Detalle</a>
+                            
+                            {% if user.is_staff %}
+                                <div class="d-flex justify-content-center gap-2 mt-1">
+                                    <a href="{% url 'competidor_editar' competidor.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 w-100">Editar</a>
+                                    <a href="{% url 'competidor_eliminar' competidor.pk %}" class="btn btn-sm btn-outline-danger rounded-pill px-3 w-100">Eliminar</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-12 text-center py-5">
+            <i class="fa-solid fa-users-slash display-4 text-muted mb-3 opacity-50"></i>
+            <p class="text-muted fst-italic fs-5">No hay competidores registrados.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

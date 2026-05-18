@@ -1,0 +1,33 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card p-4 shadow-sm w-100" style="max-width: 450px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        <header class="text-center mb-4 pb-3 border-bottom">
+            <h2 class="h4 fw-bold text-dark mb-0">
+                {% if competidor %}
+                    Editar
+                {% else %}
+                    Nuevo
+                {% endif %} 
+                Competidor
+            </h2>
+        </header>
+
+        <form method="post" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            
+            <div class="text-start">
+                {{ form.as_p }}
+            </div>
+
+            <div class="d-flex flex-column gap-2 mt-3">
+                <button type="submit" class="btn btn-primario py-2 w-100 rounded-pill">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Guardar Cambios
+                </button>
+                <a href="{% url 'competidor_lista' %}" class="text-center small text-decoration-none text-muted mt-2 fw-semibold">Volver atrás</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

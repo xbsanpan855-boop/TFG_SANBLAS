@@ -1,0 +1,85 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5 my-md-4">
+    <div class="row align-items-center gy-5">
+        <div class="col-lg-6 pr-lg-5">
+            <span class="text-uppercase fw-bold mb-2 d-block" style="color: var(--acento); letter-spacing: 2px;">Selección Gourmet Natural</span>
+            <h1 class="display-4 fw-bolder mb-4 text-dark">El sabor de la tradición familiar.</h1>
+            <p class="lead text-muted mb-4">Frutos secos, especias y snacks seleccionados en origen. Llevamos la máxima calidad del campo directamente a tu casa, sin procesados innecesarios.</p>
+            <a href="{% url 'producto_lista' %}" class="btn btn-primario btn-lg rounded-pill px-4">Explorar Catálogo</a>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://img.magnific.com/foto-gratis/vista-angulo-alto-variedad-frutos-secos-frutas-secas-diferentes-cuencos-nueces-pistachos-almendras-mani-anacardos-pinones-vertical_176474-2037.jpg" class="img-fluid rounded-4 shadow" alt="Frutos Secos">
+        </div>
+    </div>
+</section>
+
+<section class="container mb-5">
+    <div class="row text-center bg-white rounded-4 shadow-sm py-5 px-3 border">
+        <div class="col-md-4 mb-4 mb-md-0">
+            <i class="fa-solid fa-box-open fs-1 mb-3" style="color: var(--primario);"></i>
+            <h4 class="fw-bold fs-5">Envío 24/48h</h4>
+            <p class="text-muted mb-0">Rápido y directo a tu puerta</p>
+        </div>
+        <div class="col-md-4 mb-4 mb-md-0">
+            <i class="fa-solid fa-leaf fs-1 mb-3" style="color: var(--primario);"></i>
+            <h4 class="fw-bold fs-5">Calidad Origen</h4>
+            <p class="text-muted mb-0">100% natural, selección premium</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fa-solid fa-shop fs-1 mb-3" style="color: var(--primario);"></i>
+            <h4 class="fw-bold fs-5">Negocio Familiar</h4>
+            <p class="text-muted mb-0">Trato cercano y experto</p>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5 mt-4">
+    <div class="container">
+        <div class="mb-5">
+            <h2 class="fw-bold">Últimas unidades</h2>
+            <p class="text-muted">No te quedes sin tus favoritos. Selección de stock limitado.</p>
+        </div>
+        
+        <div class="row g-4">
+            {% if productos_destacados %}
+                {% for producto in productos_destacados %}
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="tarjeta-producto">
+                            <div class="img-contenedor">
+                                {% if producto.imagenProducto %}
+                                    <img src="{{ producto.imagenProducto.url }}" alt="{{ producto.nombre }}">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">Sin imagen</div>
+                                {% endif %}
+                                
+                                {% if producto.stock < 15 %}
+                                    <span class="etiqueta-stock">¡Solo {{ producto.stock }} uds!</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-flex flex-column flex-grow-1">
+                                <small class="text-muted text-uppercase fw-semibold" style="letter-spacing: 1px;">{{ producto.categoria.nombre }}</small>
+                                <h3 class="fs-5 fw-bold mt-1 mb-3"><a href="{% url 'producto_detalle' producto.pk %}" class="text-dark text-decoration-none">{{ producto.nombre }}</a></h3>
+                                
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="precio">{{ producto.precio_base }}€</span>
+                                    <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-light rounded-circle shadow-sm" style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fst-italic">Estamos actualizando nuestro catálogo de destacados. ¡Vuelve pronto!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

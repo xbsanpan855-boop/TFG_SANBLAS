@@ -1,0 +1,32 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<section class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card p-4 shadow-sm w-100" style="max-width: 480px; background-color: var(--fondo-tarjeta); border-radius: 12px; border: 1px solid var(--borde);">
+        <header class="text-center mb-4 pb-3 border-bottom">
+            <h2 class="h4 fw-bold text-dark mb-0">
+                {% if usuarios.pk %} 
+                    Editar a {{ usuario.username }} 
+                {% else %} 
+                    Registrar en San Blas 
+                {% endif %}
+            </h2>
+        </header>
+
+        <form method="post" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+            
+            <div class="text-start">
+                {{ form.as_p }}
+            </div>
+
+            <div class="d-flex flex-column gap-2 mt-3 text-center">
+                <button type="submit" class="btn btn-primario py-2 w-100 rounded-pill fw-bold">Confirmar Cambios</button>
+                <div class="mt-2">
+                    <a href="{% url 'usuario_lista' %}" class="small text-decoration-none text-muted fw-semibold">Volver a la lista</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

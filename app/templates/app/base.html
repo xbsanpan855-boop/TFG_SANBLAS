@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Frutos Secos San Blas{% endblock %}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-sanblas sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand navbar-marca" href="{% url 'inicio' %}">
+                <img src="https://frutossecossanblas.com/wp-content/uploads/2024/03/San-Blas-Logo.png" alt="San Blas Logo" style="height: 40px;"> San Blas
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menuNavegacion">
+                
+                <form action="{% url 'producto_lista' %}" method="GET" class="d-flex mx-lg-4 my-2 my-lg-0 flex-grow-1" style="max-width: 400px;">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control rounded-start-pill" placeholder="Buscar almendras, especias...">
+                        <button type="submit" class="btn btn-outline-secondary rounded-end-pill"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'producto_lista' %}">Catálogo</a></li>
+                    <li class="nav-item me-lg-3"><a class="nav-link fw-semibold" href="{% url 'receta_lista' %}">Recetas</a></li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fa-regular fa-user"></i> {{ user.username }}
+                            </a>
+                            <div class="small text-muted text-center">Saldo: ${{ user.saldo }}</div>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <li><a class="dropdown-item" href="{% url 'pedido_propios' %}"><i class="fa-solid fa-box-open me-2"></i> Mis Pedidos</a></li>
+                                <li><a class="dropdown-item" href="{% url 'agregar_saldo' %}"><i class="fa-solid fa-coins me-2"></i> Agregar Saldo</a></li>
+                                {% if user.is_staff %}
+                                    <li><a class="dropdown-item" href="{% url 'panel_admin' %}"><i class="fa-solid fa-gear me-2"></i> Panel Admin</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="m-0 p-0">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Cerrar Sesión</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'login' %}">Entrar</a></li>
+                        <li class="nav-item ms-lg-2"><a class="btn btn-primario rounded-pill px-3" href="{% url 'registro' %}">Crear cuenta</a></li>
+                    {% endif %}
+                    
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a href="{% url 'ver_carrito' %}" class="nav-link position-relative fs-5">
+                            <i class="fa-solid fa-cart-shopping text-dark"></i> 
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <main class="flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-white border-top pt-5 pb-3 mt-auto">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <h4 class="navbar-marca mb-3"><img src="https://frutossecossanblas.com/wp-content/uploads/2024/03/San-Blas-Logo.png" alt="San Blas Logo" style="height: 40px;"> San Blas</h4>
+                    <p class="text-muted">Tradición, familia y el auténtico sabor de lo natural. Directo del origen a tu mesa.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-flex flex-column flex-md-row justify-content-md-end gap-3">
+                        <a href="{% url 'producto_lista' %}" class="text-decoration-none text-muted fw-semibold">Tienda Online</a>
+                        <a href="#" class="text-decoration-none text-muted fw-semibold">Contacto</a>
+                        <a href="#" class="text-decoration-none text-muted fw-semibold">Aviso Legal</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-muted mt-4 pt-3 border-top">
+                <small>&copy; {% now "Y" %} Frutos Secos San Blas. Todos los derechos reservados.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block javascript %}{% endblock %}
+</body>
+</html>
