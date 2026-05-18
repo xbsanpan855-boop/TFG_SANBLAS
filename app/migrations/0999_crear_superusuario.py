@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         # Esto le dice a Django que se ejecute después de tus modelos anteriores
-        ('app', '__first__'), 
+        ('app', '0002_usuario_saldo'),
     ]
 
     operations = [
