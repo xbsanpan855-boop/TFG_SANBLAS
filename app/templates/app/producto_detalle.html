@@ -69,18 +69,14 @@
                 {% for producto_competidor in comparativa_competidores %}
                     <div class="card shadow-sm flex-shrink-0" style="width: 320px; scroll-snap-align: start; border-radius: 12px; border: 1px solid var(--borde);">
                         
-                        <div class="bg-light" style="height: 180px; border-radius: 12px 12px 0 0; overflow: hidden;">
+                        <div class="bg-white border-bottom d-flex align-items-center justify-content-center" style="height: 180px; border-radius: 12px 12px 0 0; overflow: hidden; padding: 15px;">
                             {% if producto_competidor.imagen_url %}
-                                <div class="img-competidor-contenedor rounded border bg-white mb-3" 
-                                    style="width: 120px; height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 5px;">
-                                    <img src="{{ producto_competidor.imagen_url }}" 
-                                        alt="{{ producto_competidor.nombre }}" 
-                                        class="img-fluid" 
-                                        style="max-width: 100%; max-height: 100%; object-fit: contain; width: auto; height: auto;">
-                                </div>
+                                <img src="{{ producto_competidor.imagen_url }}" 
+                                    alt="{{ producto_competidor.nombre }}" 
+                                    class="img-fluid" 
+                                    style="max-width: 100%; max-height: 100%; object-fit: contain; width: auto; height: auto;">
                             {% else %}
-                                <div class="rounded border bg-light d-flex align-items-center justify-content-center mb-3 text-muted small" 
-                                    style="width: 120px; height: 120px;">
+                                <div class="rounded border bg-light d-flex align-items-center justify-content-center text-muted small w-100 h-100">
                                     Sin foto
                                 </div>
                             {% endif %}
