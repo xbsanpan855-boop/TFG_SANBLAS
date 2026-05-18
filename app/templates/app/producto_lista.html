@@ -41,28 +41,40 @@
     <div class="row g-4 mb-5">
         {% for prod in productos %}
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <article class="tarjeta-producto h-100 d-flex flex-column">
+                <article class="tarjeta-producto h-100 d-flex flex-column {% if prod.stock <= 0 %}pe-none bg-light border-secondary-subtle opacity-75{% endif %}">
+                    
                     <div class="img-contenedor position-relative">
-                        {% if prod.imagenProducto %}
-                            <img src="{{ prod.imagenProducto.url }}" alt="{{ prod.nombre }}">
+                        {% if prod.imagen_url %}
+                            <img src="{{ prod.imagen_url }}" alt="{{ prod.nombre }}" {% if prod.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
+                        {% elif prod.imagenProducto %}
+                            <img src="{{ prod.imagenProducto.url }}" alt="{{ prod.nombre }}" {% if prod.stock <= 0 %}style="filter: grayscale(100%);"{% endif %}>
                         {% else %}
                             <div class="d-flex align-items-center justify-content-center h-100 text-muted small bg-light">Sin foto</div>
+                        {% endif %}
+
+                        {% if prod.stock <= 0 %}
+                            <span class="position-absolute top-0 start-0 m-2 badge bg-dark text-white fw-bold rounded-pill px-3 py-2">AGOTADO</span>
                         {% endif %}
                     </div>
                     
                     <div class="d-flex flex-column flex-grow-1 mt-2">
-                        <h3 class="h6 fw-bold text-dark mb-1">{{ prod.nombre }}</h3>
+                        <h3 class="h6 fw-bold mb-1 {% if prod.stock <= 0 %}text-secondary{% else %}text-dark{% endif %}">{{ prod.nombre }}</h3>
                         <p class="text-muted small text-uppercase mb-2" style="letter-spacing: 1px;">{{ prod.categoria.nombre }}</p>
-                        <p class="fs-4 fw-bold mb-3" style="color: var(--primario);">{{ prod.precio_base }}€</p>
+                        <p class="fs-4 fw-bold mb-3" style="color: {% if prod.stock <= 0 %}#6c757d{% else %}var(--primario){% endif %};">{{ prod.precio_base }}€</p>
                         
                         <div class="mt-auto d-flex flex-column gap-2">
                             <div class="d-flex gap-2">
-                                <a href="{% url 'producto_detalle' prod.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill flex-grow-1">Ver Detalle</a>
-                                <a href="{% url 'agregar_carrito' prod.pk %}" class="btn btn-sm btn-primario rounded-pill flex-grow-1">Comprar</a>
+                                {% if prod.stock <= 0 %}
+                                    <button class="btn btn-sm btn-secondary rounded-pill flex-grow-1 disabled" disabled>Agotado</button>
+                                    <button class="btn btn-sm btn-dark rounded-pill flex-grow-1 disabled" disabled><i class="fa-solid fa-lock me-1"></i> Sin Stock</button>
+                                {% else %}
+                                    <a href="{% url 'producto_detalle' prod.pk %}" class="btn btn-sm btn-outline-secondary rounded-pill flex-grow-1">Ver Detalle</a>
+                                    <a href="{% url 'agregar_carrito' prod.pk %}" class="btn btn-sm btn-primario rounded-pill flex-grow-1">Comprar</a>
+                                {% endif %}
                             </div>
                             
                             {% if user.is_staff %}
-                                <div class="d-flex justify-content-center gap-2 mt-2 pt-2 border-top">
+                                <div class="d-flex justify-content-center gap-2 mt-2 pt-2 border-top pe-auto">
                                     <a href="{% url 'producto_editar' prod.pk %}" class="text-decoration-none fw-semibold small" style="color: var(--primario);">Editar</a>
                                     <span class="text-muted small">|</span>
                                     <a href="{% url 'producto_eliminar' prod.pk %}" class="text-danger text-decoration-none fw-semibold small">Eliminar</a>
