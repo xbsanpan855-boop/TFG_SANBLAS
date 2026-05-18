@@ -52,7 +52,7 @@ class ProductoForm(forms.ModelForm):
             'es_ecologico': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'precio_base': forms.NumberInput(attrs={'class': 'form-control'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
-            'imagenProducto': forms.FileInput(attrs={'class': 'form-control'}),
+            'imagenProducto': forms.URLInput(attrs={'class': 'form-control'}),
         }
         
 class UsuarioForm(forms.ModelForm):
@@ -158,7 +158,7 @@ class RecetaForm(forms.ModelForm):
             'instrucciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'tiempo_preparacion': forms.NumberInput(attrs={'class': 'form-control'}),
             'dificultad': forms.Select(attrs={'class': 'form-select'}),
-            'imagenReceta': forms.FileInput(attrs={'class': 'form-control'}),
+            'imagenReceta': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
 class IngredienteRecetaForm(forms.ModelForm):
